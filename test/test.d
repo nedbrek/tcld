@@ -14,7 +14,7 @@ void main(char[][] argv)
 		return;
 	}
 
-	char *fileName = "code.tcl";
+	TclString fileName = "code.tcl";
 	if( argv.length > 1 )
 		fileName = std.string.toStringz(argv[1]);
 

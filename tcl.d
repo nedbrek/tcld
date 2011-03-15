@@ -1,13 +1,22 @@
 /// Interface to the Tcl C library
 module tcl;
 // ----------------------------------------------------------------------
+version(D_Version2)
+{
+	mixin("alias immutable(char)* TclString;");
+}
+else
+{
+	alias char* TclString;
+}
+
 
 extern (C) {
    alias void* ClientData;
-   alias void (*Tcl_FreeProc)(char* blockPtr);
-   alias void (*Tcl_CmdDeleteProc)(ClientData clientData);
-   alias int (*Tcl_CmdProc)(ClientData clientData, Tcl_Interp * interp,
-                            int argc, char* argv[]);
+   alias void function(char* blockPtr) Tcl_FreeProc;
+   alias void function(ClientData clientData) Tcl_CmdDeleteProc;
+   alias int  function(ClientData clientData, Tcl_Interp * interp,
+                            int argc, char* argv[]) Tcl_CmdProc;
    alias void* Tcl_Command;
 
    struct Tcl_Interp {
@@ -39,7 +48,7 @@ extern (C) {
 
 	/// Evaluate a string or a file in the interpreter
    int Tcl_Eval    (Tcl_Interp* interp, char* string);
-   int Tcl_EvalFile(Tcl_Interp* interp, char* fileName);
+   int Tcl_EvalFile(Tcl_Interp* interp, TclString fileName);
 
 	/// Get the last string result from the interpreter
    char* Tcl_GetStringResult(Tcl_Interp* interp);
