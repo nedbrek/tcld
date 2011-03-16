@@ -2,6 +2,15 @@ import std.stdio;
 import std.string;
 import tcl;
 
+version(D_Version2)
+{
+	   mixin("alias immutable(char)* StringLiteral;");
+}
+else
+{
+	   alias char* StringLiteral;
+}
+
 /** Tcl driver
  *
  */
@@ -14,7 +23,7 @@ void main(char[][] argv)
 		return;
 	}
 
-	TclString fileName = "code.tcl";
+	StringLiteral fileName = "code.tcl";
 	if( argv.length > 1 )
 		fileName = std.string.toStringz(argv[1]);
 
